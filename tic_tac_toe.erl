@@ -30,7 +30,7 @@ handle_call({move, Player, Row, Col}, _From, State) ->
   NewState = update({Player, Row, Col}, State),
   % the second value is sent back to caller
   % the third value is the new state
-  {reply, NewState, NewState};
+  {reply, ok, NewState};
 
 handle_call({score, Player}, _From, State) ->
   _IsWin = get_score(Player, State),
@@ -51,10 +51,12 @@ get_score(Player, {{R1, R2, R3}, {C1, C2, C3}, {D1, D2}}) ->
   lists:any(Wins, _Scores).
 
 get_val(x) -> 1;
-get_val(o) -> -1.
+get_val(o) -> -1;
+get_val(_) -> 0.
 
 get_win_function(x) -> fun(X) -> if X >= 3 -> true; true -> false end end;
-get_win_function(o) -> fun(X) -> if X =< -3 -> true; true -> false end end.
+get_win_function(o) -> fun(X) -> if X =< -3 -> true; true -> false end end;
+get_win_function(_) -> fun(_) -> false end.
 
 update_val(Val, Place, {P1, P2, P3}) ->
   case Place of
