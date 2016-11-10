@@ -54,7 +54,6 @@ loop({RootPid, Pid}) ->
       _Pid ! {ring, N-1},
       loop({RootPid, Pid});
     {message, M} ->
-      %io:format("~p relaying message number ~p~n", [self(), M]),
       Pid ! {message, M},
       loop({RootPid, Pid});      
     Any ->
